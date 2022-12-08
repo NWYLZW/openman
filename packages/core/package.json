@@ -1,8 +1,5 @@
 {
   "name": "@openman/core",
   "version": "0.1.0",
-  "main": "dist/index.js",
-  "dependencies": {
-    "chatgpt": "^2.0.0"
-  }
+  "main": "dist/index.js"
 }
