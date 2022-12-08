@@ -2,7 +2,7 @@ import { generate } from '@openman/core'
 
 describe('generate', function () {
   it('should create a man', () => {
-    const content = generate({
+    const messages = generate({
       名字: '未名酱',
       年龄: 19,
       身高: 168,
@@ -11,6 +11,6 @@ describe('generate', function () {
       性格: '可爱',
       种族: '猫娘'
     })
-    console.log(content)
+    messages.forEach(m => console.log(m))
   })
 })
