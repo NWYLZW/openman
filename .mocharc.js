@@ -1,6 +1,4 @@
 module.exports = {
   extension: ['ts'],
-  loader: [
-    'ts-node/esm',
-  ]
+  require: ['ts-node/register']
 }
