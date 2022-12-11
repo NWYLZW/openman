@@ -18,6 +18,10 @@ export interface Middleware<T = {}> {
   deps?: MiddlewareNames[]
 }
 
+const middlewareFiles = fs.readdirSync(__dirname)
+  .filter(file => file.endsWith('.ts') && file !== 'index.ts')
+  .map(file => file.slice(0, -3))
+
 export function defineMiddleware<
   N extends MiddlewareNames,
   DEPS extends MiddlewareNames[],
@@ -31,32 +35,24 @@ export function defineMiddleware<
   middleware: M,
   deps?: Narrow<DEPS>
 ) {
-  middleware.deps = deps
+  middleware.deps = deps ?? []
   return middleware
 }
 
+export function isMiddleware(m: any): m is Middleware {
+  return typeof m === 'function'
+    && !!m.deps
+}
+
 export const useMiddlwares = (app: Application, names: 'all' | MiddlewareNames[]) => {
-  const files = fs.readdirSync(__dirname)
-    .filter(file => file.endsWith('.ts') && file !== 'index.ts')
-    .map(file => file.slice(0, -3))
-  const middlewares = files.reduce((acc, file) => {
-    acc[file] = require(`./${file}`).default
-    return acc
-  }, {} as Record<string, Middleware>)
-  const middlewareNames = names === 'all' ? Object.keys(middlewares) : [...new Set(names)]
-  const middlewareList = middlewareNames
-    .filter(name => !!middlewares[name])
-    .map(name => middlewares[name])
-  const middlewareDeps = middlewareList
-    .filter(middleware => middleware.deps)
-    .map(middleware => middleware.deps)
-    .reduce((acc, deps) => {
-      deps.forEach(dep => acc.add(dep))
-      return acc
-    }, new Set<MiddlewareNames>())
-  const middlewareDepsList = [...middlewareDeps]
-    .filter(name => !!middlewares[name])
-    .map(name => middlewares[name])
-  const middlewareAllList = [...new Set<Middleware>([...middlewareDepsList, ...middlewareList])]
-  middlewareAllList.forEach(middleware => app.use(middleware))
+  const middlewares = new Set(names === 'all' ? middlewareFiles : names)
+  middlewares.forEach(name => {
+    const middleware = require(`./${name}`).default
+    if (isMiddleware(middleware)) {
+      if (middleware.deps) {
+        middleware.deps.forEach(dep => middlewares.add(dep))
+      }
+      app.use(middleware)
+    }
+  })
 }
