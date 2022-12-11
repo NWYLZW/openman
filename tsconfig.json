@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "CommonJS",
     "target": "ES5",
     "sourceMap": true,
     "types": ["node", "mocha", "chai"],
     "paths": {
       "@openman/*": ["./packages/*/src"]
     },
-    "moduleResolution": "NodeNext"
+    "esModuleInterop": true,
+    "moduleResolution": "Node"
   },
   "exclude": [
     "node_modules"
