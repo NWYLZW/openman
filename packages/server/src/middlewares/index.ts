@@ -41,7 +41,7 @@ export function isMiddleware(m: any): m is Middleware {
     && !!m.deps
 }
 
-export const useMiddlwares = (app: websockify.App, names: 'all' | MiddlewareNames[]) => {
+export const useMiddlwares = (app: websockify.App, names: 'all' | (MiddlewareNames | string)[]) => {
   const middlewares = new Set(names === 'all' ? middlewareFiles : names)
   const map = new Map<string, Middleware>()
   const depsMap = new Map<string, string[]>()
