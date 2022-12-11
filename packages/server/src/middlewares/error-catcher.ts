@@ -1,4 +1,5 @@
 import { defineMiddleware } from './index'
+import type {} from './logger'
 
 export default defineMiddleware('error-catcher', async (ctx, next) => {
   try {
