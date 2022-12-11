@@ -1,4 +1,5 @@
-import Application, { Context } from 'koa'
+import { Context } from 'koa'
+import type websockify from 'koa-websocket'
 import * as fs from 'fs'
 import { Middlewares } from '@openman/server'
 import { Narrow, U2I } from '../type'
@@ -44,7 +45,7 @@ export function isMiddleware(m: any): m is Middleware {
     && !!m.deps
 }
 
-export const useMiddlwares = (app: Application, names: 'all' | MiddlewareNames[]) => {
+export const useMiddlwares = (app: websockify.App, names: 'all' | MiddlewareNames[]) => {
   const middlewares = new Set(names === 'all' ? middlewareFiles : names)
   middlewares.forEach(name => {
     const middleware = require(`./${name}`).default
@@ -52,7 +53,11 @@ export const useMiddlwares = (app: Application, names: 'all' | MiddlewareNames[]
       if (middleware.deps) {
         middleware.deps.forEach(dep => middlewares.add(dep))
       }
-      app.use(middleware)
+      if (name.startsWith('ws-')) {
+        app.ws.use(middleware)
+      } else {
+        app.use(middleware)
+      }
     }
   })
 }

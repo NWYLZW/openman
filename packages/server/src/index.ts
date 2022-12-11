@@ -1,4 +1,5 @@
 import Application from 'koa'
+import websockify from 'koa-websocket'
 import { useMiddlwares } from './middlewares'
 
 const {
@@ -6,7 +7,7 @@ const {
   PORT = 8080
 } = process.env
 
-const app = new Application()
+const app = websockify(new Application())
 
 useMiddlwares(app, 'all')
 
