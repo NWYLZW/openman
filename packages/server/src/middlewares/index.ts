@@ -43,17 +43,43 @@ export function isMiddleware(m: any): m is Middleware {
 
 export const useMiddlwares = (app: websockify.App, names: 'all' | MiddlewareNames[]) => {
   const middlewares = new Set(names === 'all' ? middlewareFiles : names)
+  const map = new Map<string, Middleware>()
+  const depsMap = new Map<string, string[]>()
   middlewares.forEach(name => {
     const middleware = require(`./${name}`).default
-    if (isMiddleware(middleware)) {
-      if (middleware.deps) {
-        middleware.deps.forEach(dep => middlewares.add(dep))
-      }
-      if (name.startsWith('ws-')) {
-        app.ws.use(middleware)
-      } else {
-        app.use(middleware)
-      }
+    if (!isMiddleware(middleware)) return
+
+    map.set(name, middleware)
+    if (middleware.deps) {
+      middleware.deps.forEach(dep => middlewares.add(dep))
+      depsMap.set(name, middleware.deps)
     }
   })
+  const tag = {
+    ws: new Map<string, boolean>(),
+    nows: new Map<string, boolean>()
+  }
+  function register(name: string) {
+    const middleware = map.get(name)
+    if (!middleware) return
+
+    depsMap
+      .get(name)
+      ?.forEach(dep => register(dep))
+
+    if (name.startsWith('ws-')) {
+      if (tag.ws.get(name)) return
+
+      console.log(`[MIDDLEWARE] Registering ${name}...`)
+      tag.ws.set(name, true)
+      app.ws.use(middleware)
+    } else {
+      if (tag.nows.get(name)) return
+
+      console.log(`[MIDDLEWARE] Registering ${name}...`)
+      tag.nows.set(name, true)
+      app.use(middleware)
+    }
+  }
+  middlewares.forEach(name => register(name))
 }
