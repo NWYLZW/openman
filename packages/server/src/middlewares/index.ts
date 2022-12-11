@@ -4,10 +4,6 @@ import * as fs from 'fs'
 import { Middlewares } from '@openman/server'
 import { Narrow, U2I } from '../type'
 
-import type {} from './error-catcher'
-import type {} from './gpt'
-import type {} from './logger'
-
 declare module '@openman/server' {
   export interface Middlewares {}
 }
