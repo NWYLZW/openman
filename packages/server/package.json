@@ -1,0 +1,19 @@
+{
+  "name": "@openman/server",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "dependencies": {
+    "@koa/router": "^12.0.0",
+    "chatgpt-commonjs": "^2.0.8",
+    "dotenv": "^16.0.3",
+    "koa": "^2.14.1",
+    "koa-bodyparser": "^4.3.0",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.5"
+  },
+  "scripts": {
+    "serve": "nodemon src/index.ts"
+  }
+}

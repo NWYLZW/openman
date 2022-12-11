@@ -1,9 +1,0 @@
-{
-  "name": "@openman/cli",
-  "version": "0.1.0",
-  "main": "dist/index.js",
-  "dependencies": {
-    "chatgpt-commonjs": "^2.0.8",
-    "dotenv": "^16.0.3"
-  }
-}
