@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "dependencies": {
-    "chatgpt": "^2.0.5",
+    "chatgpt-commonjs": "^2.0.8",
     "dotenv": "^16.0.3"
   }
 }
