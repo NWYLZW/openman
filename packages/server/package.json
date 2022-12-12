@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "@koa/router": "^12.0.0",
-    "chatgpt-commonjs": "^2.0.8",
+    "chatgpt-commonjs": "^2.1.1",
     "dotenv": "^16.0.3",
     "koa": "^2.14.1",
     "koa-bodyparser": "^4.3.0",
