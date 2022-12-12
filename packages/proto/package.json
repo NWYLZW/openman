@@ -1,0 +1,8 @@
+{
+  "name": "@openman/proto",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "dependencies": {
+    "ee-promisify": "^0.2.3"
+  }
+}
