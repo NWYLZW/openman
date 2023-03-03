@@ -1,5 +1,8 @@
 {
   "name": "@openman/core",
   "version": "0.1.0",
-  "main": "dist/index.js"
+  "main": "dist/index.js",
+  "dependencies": {
+    "openai": "^3.2.1"
+  }
 }
